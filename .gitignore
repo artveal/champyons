@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.env
+
+# Ignore all JSON files in any 'cultures' folder except world.json
+**/cultures/*.json
+!**/cultures/world.json
+
+# Ignore all JSON files in any 'demographics' folder 
+**/demographics/*.json
+
+# Ignore all locales except template.
+champyons/locales/**
+!champyons/locales/**/*.pot
+

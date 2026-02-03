@@ -1,0 +1,44 @@
+from enum import Enum
+from typing import List
+
+from player_roles import PositionAttackingRoles, PositionDefendingRoles
+
+class Position(str, Enum):
+    GK =    ("GK", "Goalkeeper", 0, 1, [PositionAttackingRoles.GK, PositionAttackingRoles.GK_BALL_PLAYING, PositionAttackingRoles.GK_NO_NONSENSE], [PositionDefendingRoles.GK, PositionDefendingRoles.GK_LINE_HOLDING, PositionDefendingRoles.GK_SWEEPER])
+    
+    CB =    ("CB", "Centre back", 0, 2, [PositionAttackingRoles.CB, PositionAttackingRoles.CB_ADVANCED, PositionAttackingRoles.CB_BALL_PLAYING, PositionAttackingRoles.CB_NO_NONSENSE, PositionAttackingRoles.CB_OVERLAPPING, PositionAttackingRoles.CB_WIDE_CENTRE], [PositionDefendingRoles.CB, PositionDefendingRoles.CB_COVERING, PositionDefendingRoles.CB_COVERING_WIDE, PositionDefendingRoles.CB_STOPPING, PositionDefendingRoles.CB_STOPPING_WIDE, PositionDefendingRoles.CB_WIDE])
+    LCB =   ("LCB", "Left centre back", -1, 2, [PositionAttackingRoles.CB, PositionAttackingRoles.CB_ADVANCED, PositionAttackingRoles.CB_BALL_PLAYING, PositionAttackingRoles.CB_NO_NONSENSE, PositionAttackingRoles.CB_OVERLAPPING, PositionAttackingRoles.CB_WIDE_CENTRE], [PositionDefendingRoles.CB, PositionDefendingRoles.CB_COVERING, PositionDefendingRoles.CB_COVERING_WIDE, PositionDefendingRoles.CB_STOPPING, PositionDefendingRoles.CB_STOPPING_WIDE, PositionDefendingRoles.CB_WIDE])
+    RCB =   ("RCB", "Right centre back", 1, 2, [PositionAttackingRoles.CB, PositionAttackingRoles.CB_ADVANCED, PositionAttackingRoles.CB_BALL_PLAYING, PositionAttackingRoles.CB_NO_NONSENSE, PositionAttackingRoles.CB_OVERLAPPING, PositionAttackingRoles.CB_WIDE_CENTRE], [PositionDefendingRoles.CB, PositionDefendingRoles.CB_COVERING, PositionDefendingRoles.CB_COVERING_WIDE, PositionDefendingRoles.CB_STOPPING, PositionDefendingRoles.CB_STOPPING_WIDE, PositionDefendingRoles.CB_WIDE])
+    
+    LB =    ("LB", "Left back", -2, 2, [PositionAttackingRoles.FB, PositionAttackingRoles.FB_INSIDE_FULLBACK, PositionAttackingRoles.FB_INSIDE_WINGBACK, PositionAttackingRoles.FB_PLAYMAKING_WINGBACK, PositionAttackingRoles.FB_WINGBACK], [PositionDefendingRoles.FB, PositionDefendingRoles.FB_HOLDING, PositionDefendingRoles.FB_PRESSING])
+    RB =    ("RB", "Right back", 2, 2, [PositionAttackingRoles.FB, PositionAttackingRoles.FB_INSIDE_FULLBACK, PositionAttackingRoles.FB_INSIDE_WINGBACK, PositionAttackingRoles.FB_PLAYMAKING_WINGBACK, PositionAttackingRoles.FB_WINGBACK], [PositionDefendingRoles.FB, PositionDefendingRoles.FB_HOLDING, PositionDefendingRoles.FB_PRESSING])
+    
+    LWB =   ("LWB", "Left wing back", -2, 3, [PositionAttackingRoles.WB, PositionAttackingRoles.WB_ADVANCED, PositionAttackingRoles.WB_INSIDE, PositionAttackingRoles.WB_PLAYMAKER], [PositionDefendingRoles.WB, PositionDefendingRoles.WB_HOLDING, PositionDefendingRoles.WB_PRESSING])
+    RWB =   ("RWB", "Right wing back", 2, 3, [PositionAttackingRoles.WB, PositionAttackingRoles.WB_ADVANCED, PositionAttackingRoles.WB_INSIDE, PositionAttackingRoles.WB_PLAYMAKER], [PositionDefendingRoles.WB, PositionDefendingRoles.WB_HOLDING, PositionDefendingRoles.WB_PRESSING])
+    
+    DM =    ("DM", "Defensive midfielder", 0, 3, [PositionAttackingRoles.DM, PositionAttackingRoles.DM_BOX_TO_BOX, PositionAttackingRoles.DM_BOX_TO_BOX_PLAYMAKER, PositionAttackingRoles.DM_DEEP_LYING_PLAYMAKER, PositionAttackingRoles.DM_HALFBACK], [PositionDefendingRoles.DM, PositionDefendingRoles.DM_DROPPING, PositionDefendingRoles.DM_PRESSING, PositionDefendingRoles.DM_SCREENING, PositionDefendingRoles.DM_WIDE_COVERING])
+    LDM =   ("LDM", "Left defensive midfielder", -1, 3, [PositionAttackingRoles.DM, PositionAttackingRoles.DM_BOX_TO_BOX, PositionAttackingRoles.DM_BOX_TO_BOX_PLAYMAKER, PositionAttackingRoles.DM_DEEP_LYING_PLAYMAKER, PositionAttackingRoles.DM_HALFBACK], [PositionDefendingRoles.DM, PositionDefendingRoles.DM_DROPPING, PositionDefendingRoles.DM_PRESSING, PositionDefendingRoles.DM_SCREENING, PositionDefendingRoles.DM_WIDE_COVERING])
+    RDM =   ("RDM", "Right defensive midfielder", 1, 3, [PositionAttackingRoles.DM, PositionAttackingRoles.DM_BOX_TO_BOX, PositionAttackingRoles.DM_BOX_TO_BOX_PLAYMAKER, PositionAttackingRoles.DM_DEEP_LYING_PLAYMAKER, PositionAttackingRoles.DM_HALFBACK], [PositionDefendingRoles.DM, PositionDefendingRoles.DM_DROPPING, PositionDefendingRoles.DM_PRESSING, PositionDefendingRoles.DM_SCREENING, PositionDefendingRoles.DM_WIDE_COVERING])
+    
+    LM =    ("LM", "Left midfielder", -2, 4, [PositionAttackingRoles.WM_INSIDE, PositionAttackingRoles.WM_PLAYMAKER, PositionAttackingRoles.WM_WIDE_MIDFIELDER, PositionAttackingRoles.WM_WINGER], [PositionDefendingRoles.WM_TRACKING, PositionDefendingRoles.WM_WIDE_MIDFIELDER, PositionDefendingRoles.WM_WIDE_OUTLET])
+    RM =    ("RM", "Right midfielder", 2, 4, [PositionAttackingRoles.WM_INSIDE, PositionAttackingRoles.WM_PLAYMAKER, PositionAttackingRoles.WM_WIDE_MIDFIELDER, PositionAttackingRoles.WM_WINGER], [PositionDefendingRoles.WM_TRACKING, PositionDefendingRoles.WM_WIDE_MIDFIELDER, PositionDefendingRoles.WM_WIDE_OUTLET])
+    
+    AM =    ("AM", "Attacking midfielder", 0, 5, [PositionAttackingRoles.AM, PositionAttackingRoles.AM_ADVANCED_PLAYMAKER, PositionAttackingRoles.AM_CHANNEL, PositionAttackingRoles.AM_FREE_ROLE, PositionAttackingRoles.AM_SECOND_STRIKER], [PositionDefendingRoles.AM, PositionDefendingRoles.AM_CENTRAL_OUTLET, PositionDefendingRoles.AM_SPLITTING_OUTLET, PositionDefendingRoles.AM_TRACKING])
+    LAM =   ("LAM", "Left attacking midfielder", -1, 5, [PositionAttackingRoles.AM, PositionAttackingRoles.AM_ADVANCED_PLAYMAKER, PositionAttackingRoles.AM_CHANNEL, PositionAttackingRoles.AM_FREE_ROLE, PositionAttackingRoles.AM_SECOND_STRIKER], [PositionDefendingRoles.AM, PositionDefendingRoles.AM_CENTRAL_OUTLET, PositionDefendingRoles.AM_SPLITTING_OUTLET, PositionDefendingRoles.AM_TRACKING])
+    RAM =   ("RAM", "Right attacking midfielder", 1, 5, [PositionAttackingRoles.AM, PositionAttackingRoles.AM_ADVANCED_PLAYMAKER, PositionAttackingRoles.AM_CHANNEL, PositionAttackingRoles.AM_FREE_ROLE, PositionAttackingRoles.AM_SECOND_STRIKER], [PositionDefendingRoles.AM, PositionDefendingRoles.AM_CENTRAL_OUTLET, PositionDefendingRoles.AM_SPLITTING_OUTLET, PositionDefendingRoles.AM_TRACKING])
+    
+    ST =    ("ST", "Striker", 0, 6, [PositionAttackingRoles.ST_CENTRE_FORWARD, PositionAttackingRoles.ST_CHANNEL, PositionAttackingRoles.ST_DEEP_LYING, PositionAttackingRoles.ST_FALSE_NINE, PositionAttackingRoles.ST_POACHER, PositionAttackingRoles.ST_TARGET_FORWARD], [PositionDefendingRoles.ST_CENTRAL_OUTLET, PositionDefendingRoles.ST_CENTRE_FORWARD, PositionDefendingRoles.ST_SPLITTING_OUTLET, PositionDefendingRoles.ST_TRACKING])
+    LST =   ("LST", "Left striker", -1, 6, [PositionAttackingRoles.ST_CENTRE_FORWARD, PositionAttackingRoles.ST_CHANNEL, PositionAttackingRoles.ST_DEEP_LYING, PositionAttackingRoles.ST_FALSE_NINE, PositionAttackingRoles.ST_POACHER, PositionAttackingRoles.ST_TARGET_FORWARD], [PositionDefendingRoles.ST_CENTRAL_OUTLET, PositionDefendingRoles.ST_CENTRE_FORWARD, PositionDefendingRoles.ST_SPLITTING_OUTLET, PositionDefendingRoles.ST_TRACKING])
+    RST =   ("RST", "Right striker", 1, 6, [PositionAttackingRoles.ST_CENTRE_FORWARD, PositionAttackingRoles.ST_CHANNEL, PositionAttackingRoles.ST_DEEP_LYING, PositionAttackingRoles.ST_FALSE_NINE, PositionAttackingRoles.ST_POACHER, PositionAttackingRoles.ST_TARGET_FORWARD], [PositionDefendingRoles.ST_CENTRAL_OUTLET, PositionDefendingRoles.ST_CENTRE_FORWARD, PositionDefendingRoles.ST_SPLITTING_OUTLET, PositionDefendingRoles.ST_TRACKING])
+
+    LW =    ("LW", "Left winger", -2, 5, [PositionAttackingRoles.WF_INSIDE, PositionAttackingRoles.WF_INSIDE_FORWARD, PositionAttackingRoles.WF_PLAYMAKER, PositionAttackingRoles.WF_WIDE_FORWARD, PositionAttackingRoles.WF_WINGER], [PositionDefendingRoles.WF_WINGER, PositionDefendingRoles.WF_INSIDE_OUTLET, PositionDefendingRoles.WF_TRACKING, PositionDefendingRoles.WF_WIDE_OUTLET])
+    RW =    ("RW", "Right winger", 2, 5, [PositionAttackingRoles.WF_INSIDE, PositionAttackingRoles.WF_INSIDE_FORWARD, PositionAttackingRoles.WF_PLAYMAKER, PositionAttackingRoles.WF_WIDE_FORWARD, PositionAttackingRoles.WF_WINGER], [PositionDefendingRoles.WF_WINGER, PositionDefendingRoles.WF_INSIDE_OUTLET, PositionDefendingRoles.WF_TRACKING, PositionDefendingRoles.WF_WIDE_OUTLET])
+
+
+    def __init__(self, code: str, pos_name: str, side: int, depth: int, attack_roles: List[PositionAttackingRoles], defense_roles: List[PositionDefendingRoles]):
+        self.code = code
+        self.position_name = pos_name
+        self.side = side                # -2 left; 0=centre; 2=right
+        self.depth = depth              # 1=back; 5=forward
+        self.attack_roles = attack_roles
+        self.defense_roles = defense_roles

@@ -1,0 +1,20 @@
+[project]
+name = "champyons"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "babel>=2.17.0",
+    "pydantic[email]>=2.12.4",
+    "pydantic-settings>=2.11.0",
+    "pytest>=9.0.0",
+    "sqlalchemy>=2.0.44",
+    "tzdata>=2025.2",
+    "pydantic-extra-types>=2.10.6",
+    "requests>=2.32.5",
+]
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = "-s"
