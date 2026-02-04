@@ -7,8 +7,8 @@ from champyons.core.repositories.translations import TranslationRepository, Tran
 
 class SqlAlchemyTranslationRepository(TranslationRepository):
     """SQLAlchemy implementation of TranslationRepository."""
-    def __init__(self, db: Session):
-        self._db = db
+    def __init__(self, session: Session):
+        self.session = session
 
     def get_translations(self, *, keys: Iterable[tuple[str, int]], lang: str|None = None) -> dict[TranslationKey, TranslatedFields]:
         ''' Returns a dictionary of translations with (entity, foreign_key) as key and a dict of translatable fields for given language or all languages if lang is not given'''
@@ -33,7 +33,7 @@ class SqlAlchemyTranslationRepository(TranslationRepository):
             .where(sa.tuple_(TranslationModel.entity, TranslationModel.foreign_key).in_(keys))
             .order_by(TranslationModel.field, TranslationModel.index)
         )
-        result = self._db.execute(stmt).all()
+        result = self.session.execute(stmt).all()
 
         translations: dict[TranslationKey, TranslatedFields] = defaultdict(lambda: defaultdict(dict))
 
@@ -63,7 +63,7 @@ class SqlAlchemyTranslationRepository(TranslationRepository):
             TranslationModel.language == language,
             TranslationModel.index == index
         )
-        result = self._db.execute(stmt).scalar_one_or_none()
+        result = self.session.execute(stmt).scalar_one_or_none()
         return result
 
     def save(self, entity: str, foreign_key: int, field: str, language: str, translation: str, index: int|None = None) -> None:
@@ -80,13 +80,13 @@ class SqlAlchemyTranslationRepository(TranslationRepository):
                 translation=translation,
                 index=index
             )
-            self._db.add(translation_instance)
+            self.session.add(translation_instance)
 
-        self._db.commit()
-        self._db.refresh(translation_instance)
+        self.session.commit()
+        self.session.refresh(translation_instance)
 
     def delete(self, entity: str, foreign_key: int, field: str, language: str, index: int|None = None) -> None:
         translation_instance = self._get_by_keys(entity, foreign_key, field, language[:2], index)
         if translation_instance:
-            self._db.delete(translation_instance)
-            self._db.commit()
+            self.session.delete(translation_instance)
+            self.session.commit()
