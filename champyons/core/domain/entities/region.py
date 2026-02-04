@@ -4,6 +4,7 @@ from typing import List, Optional
 from .mixins.geography import GeographyMixin
 from .mixins.timestamp import TimestampMixin
 from .mixins.active import ActiveMixin
+from ..enums.region import RegionTypeEnum
 
 from typing import TYPE_CHECKING
 
@@ -14,6 +15,7 @@ if TYPE_CHECKING:
 class Region(ActiveMixin, GeographyMixin, TimestampMixin):
     id: Optional[int] = None
     name: str = ""
+    type: RegionTypeEnum = RegionTypeEnum.SCOUTABLE_REGION
 
     # Relationships
     nations: List["Nation"] = field(default_factory=list)
