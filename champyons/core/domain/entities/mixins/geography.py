@@ -5,3 +5,5 @@ from typing import Optional
 class GeographyMixin:
     ''' Mixin that adds geonames_id (int) to the entity'''
     geonames_id: Optional[int] = None
+
+    

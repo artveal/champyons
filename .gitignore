@@ -21,3 +21,6 @@ wheels/
 champyons/locales/**
 !champyons/locales/**/*.pot
 
+# ignore tree.py
+tree.py
+

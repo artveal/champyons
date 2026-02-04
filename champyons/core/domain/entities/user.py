@@ -7,11 +7,6 @@ from .mixins.active import ActiveMixin
 from .mixins.timestamp import TimestampMixin
 
 @dataclass
-class UserRole:
-    """Rol asociado a un usuario."""
-    role: UserRoleEnum
-
-@dataclass
 class User(TimestampMixin, ActiveMixin):
     """Modelo de dominio de un usuario."""
     id: Optional[int] = None
@@ -28,7 +23,7 @@ class User(TimestampMixin, ActiveMixin):
     timezone: str = "Europe/Madrid"
 
     # roles
-    roles: List[UserRole] = field(default_factory=list)
+    roles: List[UserRoleEnum] = field(default_factory=list)
 
     # helpers
     def has_role(self, role: str | UserRoleEnum) -> bool:
@@ -38,7 +33,7 @@ class User(TimestampMixin, ActiveMixin):
     def add_role(self, role: str | UserRoleEnum):
         role_enum = role if isinstance(role, UserRoleEnum) else UserRoleEnum(role)
         if not self.has_role(role_enum):
-            self.roles.append(UserRole(role_enum))
+            self.roles.append(role_enum)
 
     def remove_role(self, role: str | UserRoleEnum):
         role_enum = role if isinstance(role, UserRoleEnum) else UserRoleEnum(role)
@@ -47,3 +42,5 @@ class User(TimestampMixin, ActiveMixin):
     @property
     def is_admin(self) -> bool:
         return self.has_role(UserRoleEnum.ADMIN)
+    
+    

@@ -14,3 +14,7 @@ class AuthorMixin:
 
     created_by: Optional["User"] = None  # forward reference, only memory
     updated_by: Optional["User"] = None
+
+    def update_authorship(self, updated_by: "User"):
+        self.updated_by_id = updated_by.id
+        self.updated_by = updated_by

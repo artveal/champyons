@@ -1,8 +1,7 @@
 import os
 
 ignore = {"__pycache__", ".venv", ".git", ".pytest_cache", "tree.py", ".vscode", "README.md", }
-no_recurse = {""
-"", "locales"}
+no_recurse = {"tests", "locales"}
 
 def print_tree(root, prefix=""):
     items = [i for i in sorted(os.listdir(root)) if i not in ignore]
