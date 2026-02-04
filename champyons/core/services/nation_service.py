@@ -18,7 +18,6 @@ class NationService:
             is_world_federation_member=data.is_world_federation_member,
             is_confederation_member=data.is_confederation_member,
             continent_id=data.continent_id,
-            region_id=data.region_id,
             parent_id=data.parent_id,
             active=data.active,
             geonames_id=data.geonames_id,
