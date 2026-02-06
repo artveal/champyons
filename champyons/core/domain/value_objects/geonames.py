@@ -1,162 +1,135 @@
 from dataclasses import dataclass, field
-from typing import Optional, Dict
-import json
-from ..enums.geonames import FeatureClass, FeatureCode
+from typing import Optional
+from enum import StrEnum
 
-def normalize_fclass(v: str | FeatureClass) -> FeatureClass:
-    if isinstance(v, str):
-        v = v.upper()
-    else:
-        return v
-    try:
-        return FeatureClass[v]
-    except ValueError:
-        return FeatureClass.A
+class GeonamesFeatureClass(StrEnum):
+    A =  "A" # country, state, region,...
+    H =  "H" # stream, lake, ...
+    L =  "L" # parks,area, ...
+    P =  "P" # city, village...
+    R =  "R" # roads
+    S =  "S" # spots (buildings, farms...)
+    T =  "T" # terrain (mountains, hills...)
+    U =  "U" # undersea
+    V =  "V" # forest
 
-def normalize_fcode(v: str | FeatureCode) -> FeatureCode:
-
-    if isinstance(v, str):
-        v = v.upper()
-    else:
-        return v
-
-    try:
-        return FeatureCode[v]
-    except ValueError:
-        return FeatureCode.NULL
-
-@dataclass(frozen=True)
-class AlternateName:
-    name: str
-    lang: str|None = None
-    isShortName: bool = False
-    isPreferredName: bool = False
-    isHistorical: bool = False
-    isColloquial: bool = False
-
-    def to_dict(self) -> dict:
-        return self.__dict__
-
-    @classmethod
-    def from_dict(cls, data: dict) -> "AlternateName":
-        return cls(
-            name= data["name"],
-            lang= data.get("lang"),
-            isShortName= data.get("isShortName", False),
-            isPreferredName= data.get("isPreferredName", False),
-            isHistorical= data.get("isHistorical", False),
-            isColloquial= data.get("isColloquial", False)
-        )
+class GeonamesFeatureCode(StrEnum):
+    # supra-national entities (continents, regions, zones...)
+    CONTINENT = "CONT"
+    ZONE = "ZN"
+    BUFFER_ZONE = "ZNB"
+    REGION = "RGN"
+    ECONOMIC_REGION = "RGNE"
     
+    # political entities (nations)
+    POLITICAL_ENTITY = "PCL"
+    DEPENDENT_POLITICAL_ENTITY = "PCLD"
+    FREELY_ASSOCIATED_STATE	= "PCLF"
+    INDEPENDANT_POLITICAL_ENTITY = "PCLI"
+    INDEPENDANT_POLITICAL_ENTITY_SECTION = "PCLIX"
+    SEMI_INDEPENDANT_POLITICAL_ENTITY =	"PCLS"
+    
+    # subnational administrative entities
+    ADMIN_1	= "ADM1"
+    ADMIN_2	= "ADM2"
+    ADMIN_3	= "ADM3"
+    ADMIN_4	= "ADM4"
+    ADMIN_5	= "ADM5"
+    ADMIN_DIVISION	= "ADMD"
+    LEASED_AREA	=	"LTER"
+    PARISH	=	"PRSH"
+    TERRITORY	=	"TERR"
+    
+    # populated places (towns and cities)
+    POPULATED_PLACE	= "PPL"
+    POLITICAL_ENTITY_CAPITAL = "PPLC"
+    SEAT_OF_GOVERMENT =	"PPLG"
+    SEAT_OF_ADMIN_1	= "PPLA"
+    SEAT_OF_ADMIN_2	= "PPLA2"
+    SEAT_OF_ADMIN_3	= "PPLA3"
+    SEAT_OF_ADMIN_4	= "PPLA4"
+    SEAT_OF_ADMIN_5	= "PPLA5"
+
+    FARM_VILLAGE	= "PPLF"
+    POPULATED_LOCALITY	= "PPLL"
+    RELIGIUS_POPULATED_PLACE	= "PPLR"
+    POPULATED_PLACES	= "PPLS"
+    SECTION_OF_POPULATED_PLACE	= "PPLX"
+    ISRAELI_SETTLEMENT	= "STLMT"
+
+    # historical, destroyed or abandoned
+    HISTORICAL_REGION = "RGNH"
+    HISTORICAL_POLITICAL_ENTITY	= "PCLH"
+    HISTORICAL_ADMIN_1 = "ADM1H"
+    HISTORICAL_ADMIN_2 = "ADM2H"
+    HISTORICAL_ADMIN_3 = "ADM3H"
+    HISTORICAL_ADMIN_4 = "ADM4H"
+    HISTORICAL_ADMIN_5 = "ADM5H"
+    HISTORICAL_ADMIN_DIVISION	= "ADMDH"
+    HISTORICAL_CAPITAL	= "PPLCH"
+    HISTORICAL_POPULATED_PLACE	= "PPLH"
+    ABANDONED_POPULATED_PLACE	="PPLQ"
+    DESTROYED_POPULATED_PLACE	= "PPLW"
+  
+    # unset
+    NULL	=	"NULL"
+
+ALLOWED_FCODES_FOR_LOCAL_REGIONS = {
+    "ADM1", "ADM2", "ADM3", "ADM4", "ADM5", "ADMD", "LTER", "PRSH", "TERR", "RGN",
+    "RGNH", "ADM1H", "ADM2H", "ADM3H", "ADM4H", "ADM5H", "ADMDH"
+}
+ALLOWED_FCODES_FOR_NATIONS = ALLOWED_FCODES_FOR_LOCAL_REGIONS.union({"PCL", "PCLD", "PCLF",
+                                                                     "PCLI", "PCLIX", "PCLS",
+                                                                     "PCLH"})
+                                                                     
+ALLOWED_FCODES_FOR_CITIES = {"PPL", "PPLC", "PPLG" "PPLA", "PPLA2", "PPLA3",
+                             "PPLA4", "PPLA5", "PPLF", "PPLL", "PPLR", "PPLS",
+                             "PPLX", "STLMT", "PPLH", "PPLCH", "PPLQ", "PPLW"}
+
+ALLOWED_FCODES_FOR_CONTINENTS = {"CONT"}
+ALLOWED_FCODES_FOR_REGIONS = {"ZN", "CONT", "RGN", "RGNE", "RGNH"}
+
 
 @dataclass(frozen=True)
-class GeonamesTimezone:
-    gmtOffset: Optional[int] = None
-    timeZoneId: Optional[str] = None
-    dstOffset: Optional[int] = None
-
-    def to_dict(self) -> dict:
-        return self.__dict__
-
-    @classmethod
-    def from_dict(cls, data: dict) -> "GeonamesTimezone":
-        return cls(**data)
-
-@dataclass(frozen=True)
-class GeonamesBBox:
-    east: float = 0.0
-    south: float = 0.0
-    north: float = 0.0
-    west: float = 0.0
-    accuracyLevel: Optional[int] = None
-
-    def to_dict(self) -> dict:
-        return self.__dict__
-
-    @classmethod
-    def from_dict(cls, data: dict) -> "GeonamesBBox":
-        return cls(**data)
-
-@dataclass(frozen=True)
-class GeonamesResult:
-    # Short/Medium/Full
-    geonameId: int
+class GeonamesData:
+    geonames_id: int
     name: str
-    toponymName: str
-    lng: float
-    lat: float
-    fcl: FeatureClass
-    fcode: FeatureCode
-    countryId: int | None = None
-    countryCode: str | None = None
-
-    # Medium fields
-    cc2: Optional[str] = None
-    population: Optional[int] = None
-    countryName: Optional[str] = None
-    adminCode1: Optional[str] = None
-    adminName1: Optional[str] = None
-    adminId1: Optional[int] = None
-    adminCodes1: Dict[str, str] = field(default_factory=dict)
-    fclName: Optional[str] = None
-    fcodeName: Optional[str] = None
-
-    # Full fields
-    timezone: Optional[GeonamesTimezone] = None
-    bbox: Optional[GeonamesBBox] = None
-    asciiName: Optional[str] = None
+    feature_class: GeonamesFeatureClass
+    feature_code: GeonamesFeatureCode
+    
+    longitude: float
+    latitude: float
     elevation: Optional[int] = None
-    astergdem: Optional[int] = None
-    srtm3: Optional[int] = None
-    score: Optional[float] = None
-    continentCode: Optional[str] = None
-    adminTypeName: Optional[str] = None
+
+    population: int = 0
+
+    country_code: Optional[str] = None
+    other_country_codes: list[str] = field(default_factory=list)
+    continent_code: Optional[str] = None
+    timezone_id: Optional[str] = None
+    translations: dict[str, str] = field(default_factory=dict)
+
+    @property
+    def can_be_continent(self) -> bool:
+        """ Returns whether the instance can be a continent"""
+        return self.feature_code.value in ALLOWED_FCODES_FOR_CONTINENTS
     
-    adminId2: Optional[int] = None
-    adminId3: Optional[int] = None
-    adminId4: Optional[int] = None
-    adminId5: Optional[int] = None
-    adminCode2: Optional[str] = None
-    adminCode3: Optional[str] = None
-    adminCode4: Optional[str] = None
-    adminCode5: Optional[str] = None
-    adminName2: Optional[str] = None
-    adminName3: Optional[str] = None
-    adminName4: Optional[str] = None
-    adminName5: Optional[str] = None
-
-    wikipediaURL: Optional[str] = None
-    alternateNames: list[AlternateName] = field(default_factory=list)
-
-    def __post_init__(self):
-        object.__setattr__(self, "fcl", normalize_fclass(self.fcl))
-        object.__setattr__(self, "fcode", normalize_fcode(self.fcode))
-
-    def to_dict(self) -> dict:
-        data = self.__dict__.copy()
-        if self.timezone:
-            data["timezone"] = self.timezone.to_dict()
-        if self.bbox:
-            data["bbox"] = self.bbox.to_dict()
-        if self.alternateNames:
-            data["alternateNames"] = [alt_name.to_dict() for alt_name in self.alternateNames]
-        return data
-
-    @classmethod
-    def from_dict(cls, data: dict) -> "GeonamesResult":
-        tz = GeonamesTimezone.from_dict(data["timezone"]) if data.get("timezone") else None
-        bbox = GeonamesBBox.from_dict(data["bbox"]) if data.get("bbox") else None
-        alt_names = [AlternateName.from_dict(alt_name) for alt_name in data["alternateNames"]]
-        return cls(
-            **{k: v for k, v in data.items() if k not in ("timezone", "bbox", "alternateNames")},
-            timezone=tz,
-            bbox=bbox,
-            alternateNames=alt_names
-        )
-
-    def to_json(self) -> str:
-        return json.dumps(self.to_dict(), ensure_ascii=False)
-
-    @classmethod
-    def from_json(cls, s: str) -> "GeonamesResult":
-        return cls.from_dict(json.loads(s))
+    @property
+    def can_be_region(self) -> bool:
+        """ Returns whether the instance can be a region"""
+        return self.feature_code.value in ALLOWED_FCODES_FOR_REGIONS
+    
+    @property
+    def can_be_nation(self) -> bool:
+        """ Returns whether the instance can be a nation"""
+        return self.feature_code.value in ALLOWED_FCODES_FOR_NATIONS
+    
+    @property
+    def can_be_local_region(self) -> bool:
+        """ Returns whether the instance can be a local region"""
+        return self.feature_code.value in ALLOWED_FCODES_FOR_LOCAL_REGIONS
+    
+    @property
+    def can_be_city(self) -> bool:
+        """ Returns whether the instance can be a city/town"""
+        return self.feature_code.value in ALLOWED_FCODES_FOR_CITIES
