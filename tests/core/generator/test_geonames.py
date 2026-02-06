@@ -1,4 +1,4 @@
-from champyons.core.generator import geonames
+from champyons.core.adapters.geonames import geonames
 import pytest
 
 @pytest.fixture
