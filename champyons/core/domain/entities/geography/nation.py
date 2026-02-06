@@ -23,12 +23,11 @@ class Nation(GeographyMixin, TimestampMixin, ActiveMixin):
     is_confederation_member: bool = False
 
     continent_id: int|None = None
-    region_id: int|None = None
     parent_id: int|None = None
 
     # Optional relations for domain use
     continent: Optional["Continent"] = None
-    region: Optional["Region"] = None
+    regions: List["Region"] = field(default_factory=list)
     parent: Optional["Nation"] = None
 
     children: List["Nation"] = field(default_factory=list)
