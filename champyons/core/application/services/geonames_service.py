@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from champyons.core.domain.value_objects.geonames import GeonamesData
+from champyons.core.domain.value_objects.geography.geonames import GeonamesData
 
 class GeonamesRepository(ABC):
     @abstractmethod

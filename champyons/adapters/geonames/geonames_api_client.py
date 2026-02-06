@@ -11,11 +11,10 @@ This adapter:
 """
 
 import requests
-from typing import Optional
 from pydantic import ValidationError
 
-from champyons.core.domain.value_objects.geonames import GeonamesData, GeonamesFeatureClass, GeonamesFeatureCode
-from champyons.core.services.geonames_service import GeonamesRepository
+from champyons.core.domain.value_objects.geography.geonames import GeonamesData, GeonamesFeatureClass, GeonamesFeatureCode
+from champyons.core.application.services.geonames_service import GeonamesRepository
 from .dto import (
     GeonamesResultDTO,
     GeonamesSearchResponseDTO,

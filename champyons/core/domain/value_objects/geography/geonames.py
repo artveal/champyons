@@ -1,12 +1,6 @@
 from dataclasses import dataclass, field
-<<<<<<< HEAD:champyons/core/domain/value_objects/geonames.py
 from typing import Optional
 from enum import StrEnum
-=======
-from typing import Optional, Dict
-import json
-from champyons.core.domain.enums.geonames import FeatureClass, FeatureCode
->>>>>>> b6dbc43eaa8a27508ffa5e573913ce159c0ea146:champyons/core/domain/value_objects/geography/geonames.py
 
 class GeonamesFeatureClass(StrEnum):
     A =  "A" # country, state, region,...
