@@ -14,7 +14,7 @@ import requests
 from pydantic import ValidationError
 
 from champyons.core.domain.value_objects.geography.geonames import GeonamesData, GeonamesFeatureClass, GeonamesFeatureCode
-from champyons.core.application.services.geonames_service import GeonamesRepository
+from champyons.core.ports.services.geonames_service import GeonamesRepository
 from .dto import (
     GeonamesResultDTO,
     GeonamesSearchResponseDTO,

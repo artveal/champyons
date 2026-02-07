@@ -24,7 +24,7 @@ class BabelGettextI18NService(LocalizationService):
         self.default_currency_fmt = None
 
     def translate(self, key: str, **params) -> str:
-        # TO-DO. Now is a placeholder
+        # TO-DO. Now is a placeholder. We will be using Fluent.runtime
         return f"[{self.localization_ctx.language}] {key}"
     
     def format_number(self, value: int|float, decimal_places: Optional[int] = None, use_group_separator: bool = True, *, fmt: Optional[str] = None):
