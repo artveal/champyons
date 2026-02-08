@@ -9,7 +9,7 @@ class CreateContinentFromGeonames:
     Responsabilities:
     - Fetch data from Geonames (via port)
     - Validate that the data is a continent
-    - Process tranlations
+    - Process translations
     - Delegate creation to ContinentService
     """
     
