@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from champyons.core.domain.entities.nation import Nation
-from champyons.core.domain.entities.region import Region
+from champyons.core.domain.entities.geography import Nation, Region
 
 class NationRegionRepository(ABC):
     @abstractmethod
