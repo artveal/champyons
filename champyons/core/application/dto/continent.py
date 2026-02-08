@@ -10,7 +10,7 @@ TTranslation = TypeVar("TTranslation", bound=TranslationBase)
 TranslationInput = Union[TTranslation, dict[str, str]]
 
 if TYPE_CHECKING:
-    from champyons.schemas.nation import NationRead
+    from champyons.core.application.dto.nation import NationRead
     from champyons.core.domain.entities.geography.continent import Continent as ContinentEntity
 
 class ContinentBase(BaseModel):
@@ -141,7 +141,7 @@ class ContinentRead(ContinentBase):
             raise ValueError("Cannot generate read model of an instance without id")
               
         if include_nations:
-            from champyons.schemas.nation import NationRead
+            from champyons.core.application.dto.nation import NationRead
 
             nations = [
                 NationRead.from_entity(nation)

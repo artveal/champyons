@@ -1,7 +1,7 @@
-from typing import Optional, List
+from typing import Optional
 from pydantic import BaseModel, Field, PositiveInt
 from datetime import datetime
-from ..core.domain.enums.city import CityPopulationRange
+from champyons.core.domain.enums.city import CityPopulationRange
 
 from .translation import TranslationRead
 from .nation import NationRead
@@ -9,12 +9,10 @@ from .local_region import LocalRegionRead
 
 from pydantic_extra_types.coordinate import Latitude, Longitude            
 
-ForeignKey = PositiveInt
-
 class CityBase(BaseModel):
     default_name: str
-    nation_id: ForeignKey
-    local_region_id: ForeignKey
+    nation_id: PositiveInt
+    local_region_id: PositiveInt
 
     population_range: Optional[CityPopulationRange] = None
     latitude: Optional[Latitude] = None
@@ -28,12 +26,12 @@ class CityBase(BaseModel):
     }
  
 class CityCreate(CityBase):
-    created_by_id: Optional[ForeignKey] = None
+    created_by_id: Optional[PositiveInt] = None
 
 class CityUpdate(CityBase):
     default_name: Optional[str] = None
-    nation_id: Optional[ForeignKey] = None
-    local_region_id: Optional[ForeignKey] = None
+    nation_id: Optional[PositiveInt] = None
+    local_region_id: Optional[PositiveInt] = None
 
     population_range: Optional[CityPopulationRange] = None
     latitude: Optional[Latitude] = None
@@ -44,7 +42,7 @@ class CityUpdate(CityBase):
 
     active: Optional[bool] = None
     deactivated_at: Optional[datetime] = None
-    updated_by_id: Optional[ForeignKey] = None
+    updated_by_id: Optional[PositiveInt] = None
 
 class CityRead(CityBase):
     id: PositiveInt
@@ -57,8 +55,8 @@ class CityRead(CityBase):
 
     created_at: datetime
     updated_at: datetime
-    created_by_id: Optional[ForeignKey] = None
-    updated_by_id: Optional[ForeignKey] = None
+    created_by_id: Optional[PositiveInt] = None
+    updated_by_id: Optional[PositiveInt] = None
 
     name_translations: list[TranslationRead] = Field(default_factory=list)
 

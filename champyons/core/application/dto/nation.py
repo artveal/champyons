@@ -21,7 +21,7 @@ class NationBase(BaseModel):
     code: str
 
     continent_id: Optional[PositiveInt] = None
-    region_id: Optional[PositiveInt] = None
+    region_ids: list[PositiveInt] = Field(default_factory=list)
     parent_id: Optional[PositiveInt] = None
 
     is_world_federation_member: bool
@@ -90,7 +90,7 @@ class NationUpdate(NationUpsert, NationBase):
 
     code: Optional[str] = None
     continent_id: Optional[PositiveInt] = None
-    region_id: Optional[PositiveInt] = None
+    region_ids: list[PositiveInt] = Field(default_factory=list)
     parent_id: Optional[PositiveInt] = None
 
     is_world_federation_member: Optional[bool] = None
@@ -151,7 +151,6 @@ class NationRead(NationBase):
 
     # foreign_keys
     continent_id: Optional[PositiveInt] = None
-    region_id: Optional[PositiveInt] = None
     parent_id: Optional[PositiveInt] = None
 
     # translated
@@ -172,7 +171,7 @@ class NationRead(NationBase):
 
     # relationships
     continent: Optional["ContinentRead"] = None
-    region: Optional["RegionRead"] = None
+    regions: list["RegionRead"] = Field(default_factory=list)
     parent: Optional["NationRead"] = None   
     children: list["NationRead"] = Field(default_factory=list)
 
@@ -193,7 +192,7 @@ class NationRead(NationBase):
             raise ValueError("Cannot generate read model of an instance without id")
                
         continent = ContinentRead.from_entity(entity.continent) if include_continent and entity.continent else None
-        region = RegionRead.from_entity(entity.region) if include_region and entity.region else None
+        regions = [RegionRead.from_entity(region) for region in entity.regions] if include_region and entity.region else []
         parent = NationRead.from_entity(entity.parent, include_children=False) if include_parent and entity.parent else None
         children = [NationRead.from_entity(nation, include_parent=False, include_children=True) for nation in entity.children] if include_children else []
 
@@ -202,7 +201,6 @@ class NationRead(NationBase):
             default_name=entity.name,
             code=entity.code,
             continent_id=entity.continent_id,
-            region_id=entity.region_id,
             parent_id=entity.parent_id,
             is_world_federation_member=entity.is_world_federation_member,
             is_confederation_member=entity.is_confederation_member,
@@ -211,7 +209,7 @@ class NationRead(NationBase):
             updated_at=entity.updated_at,
             active=entity.active,
             continent=continent,
-            region=region,
+            region=regions,
             parent=parent,
             children=children
         )

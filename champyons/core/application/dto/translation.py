@@ -1,8 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel, PositiveInt
 
-ForeignKey = PositiveInt
-
 class TranslationBase(BaseModel):
     language: str
     translation: str
@@ -19,4 +17,4 @@ class TranslationRead(TranslationBase):
     id: PositiveInt
     entity: str
     field: str
-    foreign_key: ForeignKey
+    foreign_key: PositiveInt

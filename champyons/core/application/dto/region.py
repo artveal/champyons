@@ -6,15 +6,18 @@ from typing import Optional, TypeVar, Union, Any, TYPE_CHECKING
 
 from .translation import TranslationBase, TranslationCreate, TranslationUpdate
 
+from champyons.core.domain.enums.region import RegionTypeEnum
+
 TTranslation = TypeVar("TTranslation", bound=TranslationBase)
 TranslationInput = Union[TTranslation, dict[str, str]]
 
 if TYPE_CHECKING:
-    from champyons.schemas.nation import NationRead
+    from champyons.core.application.dto.nation import NationRead
     from champyons.core.domain.entities.geography.region import Region as RegionEntity
 
 class RegionBase(BaseModel):
     default_name: str
+    type: RegionTypeEnum = RegionTypeEnum.SCOUTABLE_REGION
 
     # Geonames attrs
     geonames_id: Optional[PositiveInt] = None
@@ -68,6 +71,7 @@ class RegionCreate(RegionUpsert, RegionBase):
 
 class RegionUpdate(RegionUpsert, RegionBase):
     default_name: Optional[str] = None
+    type: Optional[RegionTypeEnum] = None
 
     # translations
     name_translations: list[TranslationUpdate] = Field(default_factory=list, init=False)
@@ -104,6 +108,7 @@ class RegionRead(RegionBase):
 
     id: int
     default_name: str
+    type: RegionTypeEnum
 
     # Geonames attrs
     geonames_id: Optional[PositiveInt] = None
@@ -138,7 +143,7 @@ class RegionRead(RegionBase):
             raise ValueError("Cannot generate read model of an instance without id")
                
         if include_nations:
-            from champyons.schemas.nation import NationRead
+            from champyons.core.application.dto.nation import NationRead
 
             nations = [
                 NationRead.from_entity(nation)
@@ -150,6 +155,7 @@ class RegionRead(RegionBase):
         return RegionRead(
             id=entity.id,
             default_name=entity.name,
+            type=entity.type,
             geonames_id=entity.geonames_id,
             created_at=entity.created_at,
             updated_at=entity.updated_at,

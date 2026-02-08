@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from datetime import datetime
-from champyons.db.models.user import UserRoleEnum
+from champyons.core.domain.enums.user import UserRoleEnum
 
 
 class UserBase(BaseModel):

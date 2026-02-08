@@ -2,8 +2,8 @@ from typing import Optional, List, Final
 from pydantic import BaseModel, field_validator, PositiveInt
 from datetime import datetime
 
-from champyons.schemas.nation import NationRead
-from champyons.schemas.city import CityRead
+from champyons.core.application.dto.nation import NationRead
+from champyons.core.application.dto.city import CityRead
 
 ForeignKey = PositiveInt
 
