@@ -4,4 +4,8 @@ from champyons.core.domain.entities.geography.region import Region
 from .base import BaseRepository
 
 class RegionRepository(BaseRepository[Region], ABC):
-    pass
+    @abstractmethod
+    def get_by_geonames_id(self, geonames_id: int) -> Region:
+        """ 
+        Retrieve a region by its geonames ID 
+        """
