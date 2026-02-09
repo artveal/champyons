@@ -21,7 +21,7 @@ class Nationality(TimestampMixin, ActiveMixin):
     to have a nationality (e.g. England (local region), Germany (nation)... )
     """
     id: Optional[int] = None
-    entity_type: NationalityEntityType = NationalityEntityType.NATION
+    entity_type: NationalityEntityType = NationalityEntityType.COUNTRY
     entity_id: Optional[int] = None
     entity: Optional[Country|LocalRegion] = None
 
