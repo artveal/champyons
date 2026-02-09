@@ -8,7 +8,7 @@ from .translation import Translation
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .nation import Nation
+    from .country import Country
     from .local_region import LocalRegion
 
 class City(Base, ActiveMixin, GeographyMixin, TimestampMixin):
@@ -23,11 +23,11 @@ class City(Base, ActiveMixin, GeographyMixin, TimestampMixin):
     altitude: Mapped[int] = mapped_column(nullable=True) 
 
     # Foreign Keys
-    nation_id: Mapped[int] = mapped_column(sa.ForeignKey("nation.id"), index=True)
+    country_id: Mapped[int] = mapped_column(sa.ForeignKey("country.id"), index=True)
     local_region_id: Mapped[int] = mapped_column(sa.ForeignKey("local_region.id"))
 
     # Relationships
-    nation: Mapped["Nation"] = relationship("Nation", back_populates="cities", lazy="joined")
+    country: Mapped["Country"] = relationship("Nation", back_populates="cities", lazy="joined")
     local_region: Mapped["LocalRegion"] = relationship("LocalRegion", back_populates="cities", lazy="joined")
 
 

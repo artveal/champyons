@@ -8,7 +8,7 @@ from .translation import Translation
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .nation import Nation
+    from .country import Country
 
 class Continent(Base, GeographyMixin, TimestampMixin, ActiveMixin):
     __tablename__ = "continent"
@@ -19,7 +19,7 @@ class Continent(Base, GeographyMixin, TimestampMixin, ActiveMixin):
     default_name: Mapped[str] = mapped_column(String, index=True, info={"translatable": True})
 
     # Relationships
-    nations: Mapped[list["Nation"]] = relationship("Nation", back_populates="continent")
+    countries: Mapped[list["Country"]] = relationship("Nation", back_populates="continent")
 
     @classmethod
     def from_entity(cls, entity: ContinentEntity) -> "Continent":
@@ -39,7 +39,7 @@ class Continent(Base, GeographyMixin, TimestampMixin, ActiveMixin):
         self.active = entity.active
         self.geonames_id = entity.geonames_id
         
-    def to_entity(self, *, include_nations = False) -> ContinentEntity:
+    def to_entity(self, *, include_countrys = False) -> ContinentEntity:
         return ContinentEntity(
             id=self.id,
             code=self.code,
@@ -48,7 +48,7 @@ class Continent(Base, GeographyMixin, TimestampMixin, ActiveMixin):
             created_at=self.created_at,
             updated_at=self.updated_at,
             active=self.active,
-            nations=[nation.to_entity() for nation in self.nations] if include_nations else []
+            countrys=[country.to_entity() for country in self.countrys] if include_countrys else []
         )
 
 

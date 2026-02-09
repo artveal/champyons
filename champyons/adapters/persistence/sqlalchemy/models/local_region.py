@@ -10,7 +10,7 @@ from .translation import Translation
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from .nation import Nation
+    from .country import Country
     
 class LocalRegion(Base, ActiveMixin, GeographyMixin, TimestampMixin):
     __tablename__ = "local_region"
@@ -20,14 +20,14 @@ class LocalRegion(Base, ActiveMixin, GeographyMixin, TimestampMixin):
     default_name: Mapped[str] = mapped_column(String, index=True, nullable=False, info={"translatable": True})
 
     # Foreign Keys
-    nation_id: Mapped[int] = mapped_column(ForeignKey("nation.id"), index=True, nullable=False)
+    country_id: Mapped[int] = mapped_column(ForeignKey("country.id"), index=True, nullable=False)
     parent_local_region_id: Mapped[Optional[int]] = mapped_column(ForeignKey("local_region.id"), index=True, nullable=True)
-    other_nationality_id: Mapped[Optional[int]] = mapped_column(ForeignKey("nation.id"), nullable=True)
+    other_countryality_id: Mapped[Optional[int]] = mapped_column(ForeignKey("country.id"), nullable=True)
 
     # Relationships
-    nation: Mapped["Nation"] = relationship(back_populates="local_regions", lazy="joined", foreign_keys=[nation_id])
+    country: Mapped["Country"] = relationship(back_populates="local_regions", lazy="joined", foreign_keys=[country_id])
     cities: Mapped[list["City"]] = relationship(back_populates="local_region", lazy="joined")
-    other_nationality: Mapped["Nation"] = relationship(foreign_keys=[other_nationality_id])
+    other_countryality: Mapped["Country"] = relationship(foreign_keys=[other_countryality_id])
 
     # Self-referential relationships
     parent: Mapped[Optional["LocalRegion"]] = relationship("LocalRegion", remote_side=[id], back_populates="children", lazy="joined")

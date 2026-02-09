@@ -10,22 +10,22 @@ from ..mixins import ActiveMixin, TimestampMixin
 from typing import Optional, Literal, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .nation import Nation
+    from .country import Country
     from .city import City
 
 class PersonNationality(Base, TimestampMixin):
-    __tablename__ = "person_nationality"
+    __tablename__ = "person_countryality"
     person_id: Mapped[int] = mapped_column(Integer, ForeignKey("person.id"), primary_key=True)
-    nation_id: Mapped[int] = mapped_column(Integer, ForeignKey("nation.id"), primary_key=True)
+    country_id: Mapped[int] = mapped_column(Integer, ForeignKey("country.id"), primary_key=True)
 
-    international_apps: Mapped[int] = mapped_column(default=0)
-    international_goals: Mapped[int] = mapped_column(default=0)
-    youth_international_apps: Mapped[int] = mapped_column(default=0)
-    youth_international_goals: Mapped[int] = mapped_column(default=0)
+    intercountryal_apps: Mapped[int] = mapped_column(default=0)
+    intercountryal_goals: Mapped[int] = mapped_column(default=0)
+    youth_intercountryal_apps: Mapped[int] = mapped_column(default=0)
+    youth_intercountryal_goals: Mapped[int] = mapped_column(default=0)
 
-    retired_from_nation: Mapped[bool] = mapped_column(default=False)
+    retired_from_country: Mapped[bool] = mapped_column(default=False)
 
-    nation: Mapped["Nation"] = relationship("Nation")
+    country: Mapped["Country"] = relationship("Country")
     
 class Person(Base, ActiveMixin, TimestampMixin):
     __tablename__ = 'person'
@@ -39,7 +39,7 @@ class Person(Base, ActiveMixin, TimestampMixin):
     city_of_birth_id: Mapped[int] = mapped_column(ForeignKey("city.id"))
     date_of_birth: Mapped[datetime] = mapped_column()
 
-    nationalities: Mapped[list[PersonNationality]] = relationship(
+    countryalities: Mapped[list[PersonNationality]] = relationship(
         "PersonNationality",
         collection_class=list,
         cascade="all, delete-orphan",
@@ -53,53 +53,53 @@ class Person(Base, ActiveMixin, TimestampMixin):
         cascade="all, delete-orphan"
     )
 
-    def _elegible_nations(self, youth_level: bool = False) -> list["Nation"]:
+    def _elegible_countries(self, youth_level: bool = False) -> list["Country"]:
         """
-        Returns the list of nations the player can currently be selected for.
+        Returns the list of countries the player can currently be selected for.
         Rules:
-        1. If the player has played for any official nation, only include that nation (unless retired).
-        2. If the player hasn't played for any official nation, include all official nations they are eligible for.
-        3. Always include non-official nations (e.g., Catalonia) if the player has a connection.
+        1. If the player has played for any official country, only include that country (unless retired).
+        2. If the player hasn't played for any official country, include all official countries they are eligible for.
+        3. Always include non-official countries (e.g., Catalonia) if the player has a connection.
         """
-        nationality_apps_attr = "youth_international_apps" if youth_level else "international_apps"
+        countryality_apps_attr = "youth_intercountryal_apps" if youth_level else "intercountryal_apps"
 
-        nations_played_for = [
-            n.nation
-            for n in self.nationalities
-            if n.nation.is_confederation_member
-            and getattr(n, nationality_apps_attr) > 0
-            and not n.retired_from_nation
+        countries_played_for = [
+            n.country
+            for n in self.countryalities
+            if n.country.is_confederation_member
+            and getattr(n, countryality_apps_attr) > 0
+            and not n.retired_from_country
         ]
 
-        if nations_played_for:
-            nations = nations_played_for
+        if countries_played_for:
+            countries = countries_played_for
         else:
-            nations = [
-                n.nation
-                for n in self.nationalities
-                if n.nation.is_confederation_member and not n.retired_from_nation
+            countries = [
+                n.country
+                for n in self.countryalities
+                if n.country.is_confederation_member and not n.retired_from_country
             ]
 
-        # Always add non-official nations
-        nations.extend([
-            n.nation
-            for n in self.nationalities
-            if not n.nation.is_confederation_member and not n.retired_from_nation
+        # Always add non-official countries
+        countries.extend([
+            n.country
+            for n in self.countryalities
+            if not n.country.is_confederation_member and not n.retired_from_country
         ])
 
         # Remove duplicates and sort by id (stable deterministic result)
         return sorted(
-            {nation.id: nation for nation in nations}.values(),
+            {country.id: country for country in countries}.values(),
             key=lambda x: x.id
         )
         
     @property
-    def elegible_nations(self) -> list["Nation"]:
-        return self._elegible_nations()
+    def elegible_countries(self) -> list["Country"]:
+        return self._elegible_countries()
     
     @property
-    def elegible_nations_at_youth_level(self) -> list["Nation"]:
-        return self._elegible_nations(youth_level=True)
+    def elegible_countries_at_youth_level(self) -> list["Country"]:
+        return self._elegible_countries(youth_level=True)
 
 class Profile(ActiveMixin, TimestampMixin, Base):
     __abstract__ = True  # Abstract
