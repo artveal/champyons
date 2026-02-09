@@ -1,4 +1,4 @@
-from champyons.core.domain.entities import Nation, LocalRegion, City, Nationality
+from champyons.core.domain.entities import Country, LocalRegion, City, Nationality
 from champyons.core.domain.value_objects.geography.culture import Culture
 from typing import List, Optional
 from dataclasses import dataclass
@@ -10,7 +10,7 @@ class PlayerGenerationContext:
     """Context data for player generation."""
     residence_city: City
     residence_local_region: Optional[LocalRegion]
-    residence_nation: Nation
+    residence_nation: Country
     nationality: Nationality
     culture: Culture
     is_indigenous: bool
@@ -18,7 +18,7 @@ class PlayerGenerationContext:
 
 class PlayerGenerator:
     
-    def generate_player_context(self, club_base_nation: Nation | LocalRegion) -> PlayerGenerationContext:
+    def generate_player_context(self, club_base_nation: Country | LocalRegion) -> PlayerGenerationContext:
         """Generate complete player context."""
         
         # Step 1: Select city by population
@@ -54,7 +54,7 @@ class PlayerGenerator:
             secondary_nationalities=secondary_nationalities
         )
     
-    def _select_city_by_population(self, club_base_nation: Nation|LocalRegion):
+    def _select_city_by_population(self, club_base_nation: Country|LocalRegion):
         """Select a city weighted by population."""
         cities = club_base_nation.cities
         
@@ -65,7 +65,7 @@ class PlayerGenerator:
         weights = [city.population for city in cities]
         return random.choices(cities, weights=weights, k=1)[0]
     
-    def _get_nationality_from_city(self, city: City, club_base: Nation | LocalRegion) -> Nationality:
+    def _get_nationality_from_city(self, city: City, club_base: Country|LocalRegion) -> Nationality:
         """
         Get nationality following hierarchy:
         1. City's local region (if exists)
@@ -79,7 +79,7 @@ class PlayerGenerator:
             nation = self._get_nation(club_base)
             return nation.get_random_nationality()
     
-    def _is_indigenous(self, nationality: Nationality, city: City, club_base: Nation | LocalRegion) -> bool:
+    def _is_indigenous(self, nationality: Nationality, city: City, club_base: Country | LocalRegion) -> bool:
         """Determine if nationality is indigenous to the residence area."""
         local_region = city.local_region
         
@@ -92,16 +92,16 @@ class PlayerGenerator:
         nation = self._get_nation(club_base)
         return nation.is_indigenous_nationality(nationality)
     
-    def _get_nation(self, club_base: Nation | LocalRegion) -> Nation:
+    def _get_nation(self, club_base: Country | LocalRegion) -> Country:
         """Get the nation from club_base (either directly or from local region)."""
-        if isinstance(club_base, Nation):
+        if isinstance(club_base, Country):
             return club_base
         else:  # LocalRegion
             if not club_base.nation:
                 raise ValueError(f"LocalRegion {club_base.name} has no associated nation")
             return club_base.nation
         
-    def _determine_secondary_nationalities(self, primary_nationality: Nationality, is_indigenous: bool, residence_city: City, club_base_nation: Nation | LocalRegion) -> List[Nationality]:
+    def _determine_secondary_nationalities(self, primary_nationality: Nationality, is_indigenous: bool, residence_city: City, club_base_nation: Country | LocalRegion) -> List[Nationality]:
         """Determine additional nationalities."""
         secondary = []
         
@@ -125,7 +125,7 @@ class PlayerGenerator:
         
         return secondary
     
-    def _get_residence_nationality(self, club_base: Nation | LocalRegion) -> Optional[Nationality]:
+    def _get_residence_nationality(self, club_base: Country | LocalRegion) -> Optional[Nationality]:
         """Get the nationality of residence (club_base)."""
         return club_base.nationality
         

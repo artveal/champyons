@@ -1,5 +1,5 @@
 import enum
 
 class NationalityEntityType(enum.StrEnum):
-    NATION = enum.auto()
+    REGION = enum.auto()
     LOCAL_REGION = enum.auto()

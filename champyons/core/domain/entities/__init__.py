@@ -71,7 +71,7 @@ from .user import User
 # (Uncomment as entities are implemented)
 from .geography import (
     Continent,
-    Nation,
+    Country,
     Region,
     LocalRegion,
     City,
@@ -97,7 +97,7 @@ __all__ = [
     
     # Geography entities
     "Continent",
-    "Nation",
+    "Country",
     "Region",
     "LocalRegion",
     "City",

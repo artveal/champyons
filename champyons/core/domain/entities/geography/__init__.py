@@ -11,7 +11,7 @@ Notes:
 """
 
 from .continent import Continent
-from .nation import Nation
+from .country import Nation
 from .region import Region
 from .local_region import LocalRegion
 from .city import City
@@ -20,7 +20,7 @@ from .nationality import Nationality
 # Define what gets exported when using: from champyons.core.domain.entities.geography import *
 __all__ = [
     "Continent",
-    "Nation",
+    "Country",
     "Region",
     "LocalRegion",
     "City",
@@ -33,7 +33,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     # This helps IDEs with type checking without circular imports
     from champyons.core.domain.entities.geography.continent import Continent as _Continent
-    from champyons.core.domain.entities.geography.nation import Nation as _Nation
+    from champyons.core.domain.entities.geography.country import Country as _Country
     from champyons.core.domain.entities.geography.region import Region as _Region
     from champyons.core.domain.entities.geography.local_region import LocalRegion as _LocalRegion
     from champyons.core.domain.entities.geography.city import City as _City
