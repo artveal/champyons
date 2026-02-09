@@ -9,7 +9,7 @@ from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .continent import Continent
-    from .nation import Nation
+    from .country import Country
     from .local_region import LocalRegion
 
 @dataclass
@@ -27,7 +27,7 @@ class City(AuthorMixin, ActiveMixin, GeographyMixin, TimestampMixin):
     local_region_id: Optional[int] = None
 
     # Optional domain references
-    nation: Optional["Nation"] = None
+    nation: Optional["Country"] = None
     local_region: Optional["LocalRegion"] = None
 
     @property

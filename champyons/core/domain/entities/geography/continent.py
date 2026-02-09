@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, List, Optional
 
 if TYPE_CHECKING:
-    from .nation import Nation
+    from .country import Country
 
 @dataclass
 class Continent(ActiveMixin, GeographyMixin, TimestampMixin):
@@ -16,4 +16,4 @@ class Continent(ActiveMixin, GeographyMixin, TimestampMixin):
     name: str = ""
 
     # Relationships
-    nations: List["Nation"] = field(default_factory=list)
+    nations: List["Country"] = field(default_factory=list)

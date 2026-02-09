@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, List, Optional
 
 if TYPE_CHECKING:
-    from .nation import Nation
+    from .country import Country
 
 @dataclass
 class Region(ActiveMixin, GeographyMixin, TimestampMixin):
@@ -17,4 +17,4 @@ class Region(ActiveMixin, GeographyMixin, TimestampMixin):
     type: RegionTypeEnum = RegionTypeEnum.SCOUTABLE_REGION
 
     # Relationships
-    nations: List["Nation"] = field(default_factory=list)
+    nations: List["Country"] = field(default_factory=list)
