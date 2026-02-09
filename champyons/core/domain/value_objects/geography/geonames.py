@@ -78,9 +78,7 @@ ALLOWED_FCODES_FOR_LOCAL_REGIONS = {
     "ADM1", "ADM2", "ADM3", "ADM4", "ADM5", "ADMD", "LTER", "PRSH", "TERR", "RGN",
     "RGNH", "ADM1H", "ADM2H", "ADM3H", "ADM4H", "ADM5H", "ADMDH"
 }
-ALLOWED_FCODES_FOR_NATIONS = ALLOWED_FCODES_FOR_LOCAL_REGIONS.union({"PCL", "PCLD", "PCLF",
-                                                                     "PCLI", "PCLIX", "PCLS",
-                                                                     "PCLH"})
+ALLOWED_FCODES_FOR_NATIONS = {"PCL", "PCLD", "PCLF", "PCLI", "PCLIX", "PCLS", "PCLH"}
                                                                      
 ALLOWED_FCODES_FOR_CITIES = {"PPL", "PPLC", "PPLG" "PPLA", "PPLA2", "PPLA3",
                              "PPLA4", "PPLA5", "PPLF", "PPLL", "PPLR", "PPLS",
