@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from .continent import Continent
     from .nation import Nation
     from .local_region import LocalRegion
 
@@ -37,6 +38,11 @@ class City(AuthorMixin, ActiveMixin, GeographyMixin, TimestampMixin):
         max_pop = self.population_range.max_population or min_pop
         
         return (max_pop+min_pop)//2
+    
+    @property
+    def continent(self) -> "Continent"|None:
+        if hasattr(self.nation, "continent"):
+            return self.nation.continent
     
     def update_population(self, new_population: int) -> None:
         self.population_range = CityPopulationRange.from_population(new_population)
