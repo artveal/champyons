@@ -5,12 +5,12 @@ from .base import BaseRepository
 
 class LocalRegionRepository(BaseRepository[LocalRegion], ABC):
     @abstractmethod
-    def get_by_nation_id(self, nation_id: int, admin_level_depth: Optional[int] = None) -> List[LocalRegion]:
+    def get_by_country_id(self, country_id: int, admin_level_depth: Optional[int] = None) -> List[LocalRegion]:
         """
-        Retrieve all local regions of the given nation
+        Retrieve all local regions of the given country
         
         Params:
-            - nation_id: the ID of the nation
+            - country_id: the ID of the country
             - admin_level_depth: if given, local regions up to this level will be retrieved. If omitted, all will be retrieved
         """
     @abstractmethod

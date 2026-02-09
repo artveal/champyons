@@ -5,12 +5,12 @@ from .base import BaseRepository
 
 class CityRepository(BaseRepository[City], ABC):
     @abstractmethod
-    def get_by_nation_id(self, nation_id: int) -> List[City]:
+    def get_by_country_id(self, country_id: int) -> List[City]:
         """
-        Retrieve all cities of the given nation
+        Retrieve all cities of the given country
         
         Params:
-            nation_id: the ID of the nation
+            country_id: the ID of the nation
         """
     
     @abstractmethod
@@ -20,7 +20,7 @@ class CityRepository(BaseRepository[City], ABC):
         children local_regions will be retrieved. This behaviour can be changed with parameter 'include_cities_of_children'. 
         
         Params:
-            nation_id: the ID of the nation
+            local_region_id: the ID of the local_region
             include_cities_of_children : if True, retrieve all cities under this local region, whereas if False, only cities 
                 that depend directly on this local region. Defaults to True
         """
