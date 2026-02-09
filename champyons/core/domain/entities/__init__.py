@@ -75,6 +75,7 @@ from .geography import (
     Region,
     LocalRegion,
     City,
+    Nationality
 )
 
 # from .people import Player, Person
@@ -100,6 +101,7 @@ __all__ = [
     "Region",
     "LocalRegion",
     "City",
+    "Nationality"
     
     # People entities (uncomment when implemented)
     # "Player",

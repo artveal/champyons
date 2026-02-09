@@ -15,6 +15,7 @@ from .nation import Nation
 from .region import Region
 from .local_region import LocalRegion
 from .city import City
+from .nationality import Nationality
 
 # Define what gets exported when using: from champyons.core.domain.entities.geography import *
 __all__ = [
@@ -23,6 +24,7 @@ __all__ = [
     "Region",
     "LocalRegion",
     "City",
+    "Nationality"
 ]
 
 # Type hints for IDE support (optional)
@@ -35,3 +37,4 @@ if TYPE_CHECKING:
     from champyons.core.domain.entities.geography.region import Region as _Region
     from champyons.core.domain.entities.geography.local_region import LocalRegion as _LocalRegion
     from champyons.core.domain.entities.geography.city import City as _City
+    from champyons.core.domain.entities.geography.nationality import Nationality as _Nationality
