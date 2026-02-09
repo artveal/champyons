@@ -17,4 +17,4 @@ class Region(ActiveMixin, GeographyMixin, TimestampMixin):
     type: RegionTypeEnum = RegionTypeEnum.SCOUTABLE_REGION
 
     # Relationships
-    nations: List["Country"] = field(default_factory=list)
+    countries: List["Country"] = field(default_factory=list)

@@ -3,7 +3,7 @@ from typing import List
 from champyons.core.domain.entities.geography.country import Country
 from .base import BaseRepository
 
-class NationRepository(BaseRepository[Country], ABC):
+class CountryRepository(BaseRepository[Country], ABC):
     @abstractmethod
     def get_by_code(self, code: str) -> Country: 
         """

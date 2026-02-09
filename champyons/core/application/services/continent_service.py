@@ -64,8 +64,8 @@ class ContinentService:
         
         self._continent_repo.delete(entity)
     
-    def _to_read_model(self, entity: ContinentEntity, include_nations: bool = False) -> ContinentRead:
-        schema = ContinentRead.from_entity(entity, include_nations=include_nations)
+    def _to_read_model(self, entity: ContinentEntity, include_countries: bool = False) -> ContinentRead:
+        schema = ContinentRead.from_entity(entity, include_countries=include_countries)
         return schema
     
     def _set_translations(self, entity: ContinentEntity, input_data: ContinentCreate|ContinentUpdate) -> None:

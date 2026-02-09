@@ -14,9 +14,9 @@ TranslationInput = Union[TTranslation, dict[str, str]]
 if TYPE_CHECKING:
     from .city import CityRead
     from .local_region import LocalRegionRead
-    from champyons.core.domain.entities.geography.nation import Nation as NationEntity
+    from champyons.core.domain.entities.geography.country import Country as CountryEntity
 
-class NationBase(BaseModel):
+class CountryBase(BaseModel):
     default_name: str
     code: str
 
@@ -24,16 +24,13 @@ class NationBase(BaseModel):
     region_ids: list[PositiveInt] = Field(default_factory=list)
     parent_id: Optional[PositiveInt] = None
 
-    is_world_federation_member: bool
-    is_confederation_member: bool
-
     # Geonames attrs
     geonames_id: Optional[PositiveInt] = None
 
     # Active attrs
     active: bool
 
-class NationUpsert(BaseModel):
+class CountryUpsert(BaseModel):
     translated_names: list[TranslationInput] = Field(default_factory=list, init_var=True)
     translated_denonyms: list[TranslationInput] = Field(default_factory=list, init_var=True)
 
@@ -50,10 +47,7 @@ class NationUpsert(BaseModel):
     def _parse_translations(raw_translations: list[TranslationInput], use_index: bool = False):
         pass
 
-class NationCreate(NationUpsert, NationBase):
-    is_world_federation_member: bool = True
-    is_confederation_member: bool = True
-
+class CountryCreate(CountryUpsert, CountryBase):
     # translations
     name_translations: list[TranslationCreate] = Field(default_factory=list, init=False)
     denonym_translations: list[TranslationCreate] = Field(default_factory=list, init=False)
@@ -85,16 +79,13 @@ class NationCreate(NationUpsert, NationBase):
 
         return translations
 
-class NationUpdate(NationUpsert, NationBase):
+class CountryUpdate(CountryUpsert, CountryBase):
     default_name: Optional[str] = None
 
     code: Optional[str] = None
     continent_id: Optional[PositiveInt] = None
     region_ids: list[PositiveInt] = Field(default_factory=list)
     parent_id: Optional[PositiveInt] = None
-
-    is_world_federation_member: Optional[bool] = None
-    is_confederation_member: Optional[bool] = None
 
     # translations
     name_translations: list[TranslationUpdate] = Field(default_factory=list, init=False)
@@ -139,15 +130,12 @@ class NationUpdate(NationUpsert, NationBase):
 
         return translations
 
-class NationRead(NationBase):
-    __translation_key__ = "nation"
+class CountryRead(CountryBase):
+    __translation_key__ = "country"
 
     id: int
     default_name: str
     code: str
-
-    is_world_federation_member: bool
-    is_confederation_member: bool
 
     # foreign_keys
     continent_id: Optional[PositiveInt] = None
@@ -172,8 +160,8 @@ class NationRead(NationBase):
     # relationships
     continent: Optional["ContinentRead"] = None
     regions: list["RegionRead"] = Field(default_factory=list)
-    parent: Optional["NationRead"] = None   
-    children: list["NationRead"] = Field(default_factory=list)
+    parent: Optional["CountryRead"] = None   
+    children: list["CountryRead"] = Field(default_factory=list)
 
     model_config = {
         "from_attributes": True
@@ -187,23 +175,21 @@ class NationRead(NationBase):
     
    
     @classmethod
-    def from_entity(cls, entity: "NationEntity", *, include_continent: bool = True, include_region: bool = True, include_parent: bool = True, include_children: bool = False) -> "NationRead":
+    def from_entity(cls, entity: "CountryEntity", *, include_continent: bool = True, include_region: bool = True, include_parent: bool = True, include_children: bool = False) -> "CountryRead":
         if not entity.id:
             raise ValueError("Cannot generate read model of an instance without id")
                
         continent = ContinentRead.from_entity(entity.continent) if include_continent and entity.continent else None
         regions = [RegionRead.from_entity(region) for region in entity.regions] if include_region and entity.region else []
-        parent = NationRead.from_entity(entity.parent, include_children=False) if include_parent and entity.parent else None
-        children = [NationRead.from_entity(nation, include_parent=False, include_children=True) for nation in entity.children] if include_children else []
+        parent = CountryRead.from_entity(entity.parent, include_children=False) if include_parent and entity.parent else None
+        children = [CountryRead.from_entity(country, include_parent=False, include_children=True) for country in entity.children] if include_children else []
 
-        return NationRead(
+        return CountryRead(
             id=entity.id,
             default_name=entity.name,
             code=entity.code,
             continent_id=entity.continent_id,
             parent_id=entity.parent_id,
-            is_world_federation_member=entity.is_world_federation_member,
-            is_confederation_member=entity.is_confederation_member,
             geonames_id=entity.geonames_id,
             created_at=entity.created_at,
             updated_at=entity.updated_at,

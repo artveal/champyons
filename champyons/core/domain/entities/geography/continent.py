@@ -16,4 +16,4 @@ class Continent(ActiveMixin, GeographyMixin, TimestampMixin):
     name: str = ""
 
     # Relationships
-    nations: List["Country"] = field(default_factory=list)
+    countries: List["Country"] = field(default_factory=list)

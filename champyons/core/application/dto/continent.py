@@ -10,7 +10,7 @@ TTranslation = TypeVar("TTranslation", bound=TranslationBase)
 TranslationInput = Union[TTranslation, dict[str, str]]
 
 if TYPE_CHECKING:
-    from champyons.core.application.dto.nation import NationRead
+    from champyons.core.application.dto.country import CountryRead
     from champyons.core.domain.entities.geography.continent import Continent as ContinentEntity
 
 class ContinentBase(BaseModel):
@@ -123,7 +123,7 @@ class ContinentRead(ContinentBase):
     active: bool
 
     # relationships
-    nations: list["NationRead"] = Field(default_factory=list)  
+    countries: list["CountryRead"] = Field(default_factory=list)  
 
     model_config = {
         "from_attributes": True
@@ -136,19 +136,19 @@ class ContinentRead(ContinentBase):
         return self
     
     @classmethod
-    def from_entity(cls, entity: "ContinentEntity", *, include_nations: bool = False) -> "ContinentRead":
+    def from_entity(cls, entity: "ContinentEntity", *, include_countries: bool = False) -> "ContinentRead":
         if not entity.id:
             raise ValueError("Cannot generate read model of an instance without id")
               
-        if include_nations:
-            from champyons.core.application.dto.nation import NationRead
+        if include_countries:
+            from champyons.core.application.dto.country import CountryRead
 
-            nations = [
-                NationRead.from_entity(nation)
-                for nation in entity.nations
+            countries = [
+                CountryRead.from_entity(country)
+                for country in entity.countries
             ]
         else:
-            nations = []
+            countries = []
      
         return ContinentRead(
             id=entity.id,
@@ -158,5 +158,5 @@ class ContinentRead(ContinentBase):
             created_at=entity.created_at,
             updated_at=entity.updated_at,
             active=entity.active,
-            nations=nations
+            countries=countries
         )

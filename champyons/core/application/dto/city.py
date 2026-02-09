@@ -4,14 +4,14 @@ from datetime import datetime
 from champyons.core.domain.enums.city import CityPopulationRange
 
 from .translation import TranslationRead
-from .nation import NationRead
+from .country import CountryRead
 from .local_region import LocalRegionRead
 
 from pydantic_extra_types.coordinate import Latitude, Longitude            
 
 class CityBase(BaseModel):
     default_name: str
-    nation_id: PositiveInt
+    country_id: PositiveInt
     local_region_id: PositiveInt
 
     population_range: Optional[CityPopulationRange] = None
@@ -30,7 +30,7 @@ class CityCreate(CityBase):
 
 class CityUpdate(CityBase):
     default_name: Optional[str] = None
-    nation_id: Optional[PositiveInt] = None
+    country_id: Optional[PositiveInt] = None
     local_region_id: Optional[PositiveInt] = None
 
     population_range: Optional[CityPopulationRange] = None
@@ -47,7 +47,7 @@ class CityUpdate(CityBase):
 class CityRead(CityBase):
     id: PositiveInt
 
-    nation: Optional[NationRead] = None
+    country: Optional[CountryRead] = None
     local_region: Optional[LocalRegionRead] = None
 
     active: bool

@@ -32,7 +32,6 @@ class Nationality(TimestampMixin, ActiveMixin):
     nationality_rules: Optional[NationalityRules] = None
     culture_distribution: Optional[CultureDistribution] = None 
     
-
     immigration_rate: Optional[float] = None # Percentaje of foreigners (0.10 means that 10% of the population is an inmigrant)
     foreign_nationalities: List["Nationality"] = field(default_factory=list) # Foreign nationalities (e.g. {Nationality.ITALY: 0.5, Nationality:FRANCE: 0.5)
 

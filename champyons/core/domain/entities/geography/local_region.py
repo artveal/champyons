@@ -20,12 +20,12 @@ class LocalRegion(ActiveMixin, GeographyMixin, TimestampMixin):
     name: str = ""
 
     # Foreign Keys
-    nation_id: Optional[int] = None
+    country_id: Optional[int] = None
     parent_local_region_id: Optional[int] = None
 
     # Relationships
     nationality: Optional["Nationality"] = None
-    nation: Optional["Country"] = None
+    country: Optional["Country"] = None
     _cities: List["City"] = field(default_factory=list) # List of cities that depend directly on the local_region (excluding children)
 
     # Self-referential
@@ -41,8 +41,8 @@ class LocalRegion(ActiveMixin, GeographyMixin, TimestampMixin):
     
     @property
     def continent(self) -> Continent|None:
-        if hasattr(self.nation, "continent"):
-            return self.nation.continent
+        if hasattr(self.country, "continent"):
+            return self.country.continent
                    
     def get_parents(self) -> List["LocalRegion"]:
         " Returns a list of all parent local regions, sorted by hierarchy (from lower to higher)"
