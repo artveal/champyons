@@ -11,6 +11,9 @@ class User(TimestampMixin, ActiveMixin):
     """ A user represents a software player.
     - If the game is somehow adapted for a multiplayer game, each user will be an internet user.
     - If adapted to be a desktop single player game, there will be only a user
+
+    Each user can be represented by a person (Person entity) in the simulation world. People are 
+    considered in-game entities that exist only in the simulation.
     """
     id: Optional[int] = None
     username: str = ""
@@ -27,6 +30,9 @@ class User(TimestampMixin, ActiveMixin):
 
     # roles
     roles: List[UserRoleEnum] = field(default_factory=list)
+
+    # person profile. to be implemented
+    #person: Optional["Person"] = None
 
     def __post_init__(self) -> None:
         # Validate username
