@@ -17,7 +17,8 @@ class LocalRegion(ActiveMixin, GeographyMixin, TimestampMixin):
     """ Represents a subnational region of a country. It might be an administrative region
     or a geographical region inside a country (e.g. England (UK), Andalusia (Spain)..). """
     id: Optional[int] = None
-    name: str = ""
+    name: str = field(default="")
+    code: Optional[str] = None
 
     # Foreign Keys
     country_id: Optional[int] = None
@@ -32,22 +33,31 @@ class LocalRegion(ActiveMixin, GeographyMixin, TimestampMixin):
     parent: Optional["LocalRegion"] = None
     children: List["LocalRegion"] = field(default_factory=list)
 
+    def __post_init__(self) -> None:
+        if self.nationality and (not self.code or not self.name.strip()):
+            raise ValueError("Local Region code cannot be empty if represents a nationality") 
+        if not self.name or not self.name.strip():
+            raise ValueError("Local Region name cannot be empty") 
+        
     @property
     def cities(self) -> List["City"]:
-        all_cities = self._cities
+        all_cities = list(self._cities)
         for child in self.children:
             all_cities.extend(child.cities)
         return all_cities
     
     @property
     def continent(self) -> Continent|None:
-        if hasattr(self.country, "continent"):
+        if self.country:
             return self.country.continent
-                   
-    def get_parents(self) -> List["LocalRegion"]:
+
+    @property               
+    def parents(self) -> List["LocalRegion"]:
         " Returns a list of all parent local regions, sorted by hierarchy (from lower to higher)"
-        parents = [self.parent]
-        parents.extend(self.parent.get_parents())
+        parents = list()
+        if self.parent:
+            parents.append(self.parent)
+            parents.extend(self.parent.parents)
         return parents
     
     
