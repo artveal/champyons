@@ -33,45 +33,50 @@ class Nationality(TimestampMixin, ActiveMixin):
     culture_distribution: Optional[CultureDistribution] = None 
     
     immigration_rate: Optional[float] = None # Percentaje of foreigners (0.10 means that 10% of the population is an inmigrant)
-    foreign_nationalities: List["Nationality"] = field(default_factory=list) # Foreign nationalities (e.g. {Nationality.ITALY: 0.5, Nationality:FRANCE: 0.5)
+    foreign_nationalities_id: List[int] = field(default_factory=list) # Foreign nationalities (e.g. {1: 0.5, 2: 0.5), 1 and 2 representing other nationalities' ids)
+    
+    def __post_init__(self) -> None:
+        # Validar que entity_type y entity_id coinciden
+        if self.entity is None or self.entity_id is None:
+            raise ValueError(
+                f"Entity and entity_id must be defined"
+            )
+        if self.entity_type == NationalityEntityType.COUNTRY:
+            if not isinstance(self.entity, Country):
+                raise ValueError(
+                    f"Entity type is COUNTRY but entity is {type(self.entity).__name__}"
+                )
+        elif self.entity_type == NationalityEntityType.LOCAL_REGION:
+            if not isinstance(self.entity, LocalRegion):
+                raise ValueError(
+                    f"Entity type is LOCAL_REGION but entity is {type(self.entity).__name__}"
+                )
+                
+    @property
+    def name(self) -> str|None:
+        if self.entity:
+            return self.entity.name
 
     @property
-    def name(self) -> str:
-        return self.entity.name
-    
+    def code(self) -> str | None:
+        """Returns the nationality code from its associated entity."""
+        if self.entity:
+            return self.entity.code
+        return None
+        
     @property
     def local_regions(self) -> List[LocalRegion]:
-        return self.entity.local_regions if isinstance(self.entity, Country) else self.entity.children
+        if self.entity:
+            return self.entity.local_regions if isinstance(self.entity, Country) else self.entity.children
+        return list()
     
     @property
     def cities(self) -> List[City]:
-        return self.entity.cities
+        if self.entity:
+            return self.entity.cities
+        return list()
     
     @property
     def continent(self) -> Continent|None:
-        return self.entity.continent
-    
-    def get_random_nationality_for_player(
-        self,
-        nationality_repo: NationalityRepository
-    ) -> "Nationality":
-        """Generate nationality with simple foreign logic."""
-        import random
-        
-        if random.random() < self.immigration_rate:
-            # Use curated list if available
-            if self.foreign_nationalities:
-                foreign_id = random.choice(self.foreign_nationalities)
-                foreign_nat = nationality_repo.get_by_id(foreign_id)
-                if foreign_nat:
-                    return foreign_nat
-            
-            # Fallback: same continent or all, if there is no continent
-            if self.continent:
-                continent_nats = nationality_repo.get_by_continent_id(self.continent.id)
-            else:
-                continent_nats = nationality_repo.get_all()
-            if continent_nats:
-                return random.choice(continent_nats)
-        
-        return self
+        if self.entity:
+            return self.entity.continent
