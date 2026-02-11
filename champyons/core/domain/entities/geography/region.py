@@ -13,8 +13,12 @@ if TYPE_CHECKING:
 class Region(ActiveMixin, GeographyMixin, TimestampMixin):
     """ A supranational entity thar contains nations. Can be used for geographics regions, treaties..."""
     id: Optional[int] = None
-    name: str = ""
+    name: str = field(default="")
     type: RegionTypeEnum = RegionTypeEnum.SCOUTABLE_REGION
 
     # Relationships
     countries: List["Country"] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        if not self.name or not self.name.strip():
+            raise ValueError("Region name cannot be empty") 
