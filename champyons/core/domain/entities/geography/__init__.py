@@ -11,7 +11,7 @@ Notes:
 """
 
 from .continent import Continent
-from .country import Nation
+from .country import Country
 from .region import Region
 from .local_region import LocalRegion
 from .city import City
