@@ -4,7 +4,7 @@ import json
 from typing import Optional
 
 @dataclass(frozen=True)
-class NationalityRules:
+class CitizenshipRules:
     nationality_by_birth: bool = True # nationality awarded for being born in this nationality
     nationality_by_ancestry: bool = True # nationality awarded for being a descendant of this nationality
 
