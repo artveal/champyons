@@ -1,9 +1,9 @@
 from typing import List
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
-from champyons.adapters.persistence.sqlalchemy.models.nation import Nation as NationModel
-from champyons.core.domain.entities.geography.nation import Nation as NationEntity
-from champyons.core.ports.repositories.nation import NationRepository
+from champyons.adapters.persistence.sqlalchemy.models.country import Nation as NationModel
+from champyons.core.domain.entities.geography.country import Nation as NationEntity
+from champyons.core.ports.repositories.country import NationRepository
 
 class SqlAlchemyNationRepository(NationRepository):
     """SQLAlchemy implementation of NationRepository."""

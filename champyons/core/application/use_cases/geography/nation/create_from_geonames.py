@@ -1,7 +1,7 @@
 from champyons.core.ports.services.geonames_service import GeonamesRepository, GeonamesData
 from champyons.core.ports.repositories.continent import ContinentRepository
-from champyons.core.application.services.nation_service import NationService
-from champyons.core.application.dto.nation import NationCreate, NationRead
+from champyons.core.application.services.country_service import NationService
+from champyons.core.application.dto.country import NationCreate, NationRead
 
 class CreateNationFromGeonames:
     """

@@ -1,5 +1,5 @@
 from datetime import datetime
-from champyons.core.domain.entities.geography.nation import Nation as NationEntity
+from champyons.core.domain.entities.geography.country import Nation as NationEntity
 from champyons.core.timezone import now_server
 
 

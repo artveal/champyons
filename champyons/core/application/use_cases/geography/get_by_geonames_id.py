@@ -1,11 +1,11 @@
 from champyons.core.ports.repositories.continent import ContinentRepository
 from champyons.core.ports.repositories.region import RegionRepository
-from champyons.core.ports.repositories.nation import NationRepository
+from champyons.core.ports.repositories.country import NationRepository
 from champyons.core.ports.repositories.local_region import LocalRegionRepository
 from champyons.core.ports.repositories.city import CityRepository
 from champyons.core.application.dto.continent import ContinentRead
 from champyons.core.application.dto.region import RegionRead
-from champyons.core.application.dto.nation import NationRead
+from champyons.core.application.dto.country import NationRead
 from champyons.core.application.dto.local_region import LocalRegionRead
 from champyons.core.application.dto.city import CityRead
 
