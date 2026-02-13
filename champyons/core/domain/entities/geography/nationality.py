@@ -2,13 +2,13 @@ from champyons.core.domain.entities.mixins.timestamp import TimestampMixin
 from champyons.core.domain.entities.mixins.active import ActiveMixin
 from champyons.core.domain.enums.nationality import NationalityEntityType
 from champyons.core.domain.value_objects.geography.culture import CultureDistribution
-from champyons.core.domain.value_objects.geography.nationality_rules import NationalityRules
+from champyons.core.domain.value_objects.geography.citizenship_rules import CitizenshipRules
+from champyons.core.domain.value_objects.football.federation_rules import FederationRules
 
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, List, Optional
 
 if TYPE_CHECKING:
-    from champyons.core.ports.repositories.nationalities import NationalityRepository
     from .continent import Continent
     from .country import Country
     from .local_region import LocalRegion
@@ -29,7 +29,11 @@ class Nationality(TimestampMixin, ActiveMixin):
     is_world_federation_member: bool = True
     is_confederation_member: bool = False
 
-    nationality_rules: Optional[NationalityRules] = None
+    # federation rules
+    federation_rules: Optional[FederationRules] = None
+
+    # demography data 
+    citizenship_rules: Optional[CitizenshipRules] = None
     culture_distribution: Optional[CultureDistribution] = None 
     
     immigration_rate: Optional[float] = None # Percentaje of foreigners (0.10 means that 10% of the population is an inmigrant)
